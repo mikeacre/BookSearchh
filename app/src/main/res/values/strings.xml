@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">BookSearch</string>
+    <string name="textfield">Enter Book Type</string>
+    <string name="search">Search!</string>
+    <string name="nointernet">No Internet Connection</string>
+    <string name="reconnect">Please connect and restart app.</string>
+    <string name="noresults">No resutls found, please try again.</string>
+</resources>
