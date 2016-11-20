@@ -1,7 +1,5 @@
 package com.example.mikeacre.booksearch;
 
-import java.net.URL;
-
 /**
  * Created by mikeacre on 11/19/2016.
  */

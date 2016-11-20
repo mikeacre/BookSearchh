@@ -19,40 +19,30 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Helper methods related to requesting and receiving earthquake data from USGS.
- */
+
 public final class QueryUtils {
 
     public static final String LOG_TAG = QueryUtils.class.getSimpleName();
     public static final String MAX_RESULTS = "20";
 
-    /**
-     * Query the USGS dataset and return an {@link Event} object to represent a single earthquake.
-     */
+
     public static ArrayList<Book> fetchBookData(String query) {
-        // Create URL object
         String requestUrl = "https://www.googleapis.com/books/v1/volumes?q="+query+"&maxResults="+MAX_RESULTS;
         URL url = createUrl(requestUrl);
-
-        // Perform HTTP request to the URL and receive a JSON response back
         String jsonResponse = null;
+
         try {
             jsonResponse = makeHttpRequest(url);
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error closing input stream", e);
         }
 
-        // Extract relevant fields from the JSON response and create an {@link Event} object
         ArrayList<Book> books = extractBooks(jsonResponse);
 
-        // Return the {@link Event}
         return books;
     }
 
-    /**
-     * Returns new URL object from the given string URL.
-     */
+
     private static URL createUrl(String stringUrl) {
         URL url = null;
         try {
@@ -63,13 +53,9 @@ public final class QueryUtils {
         return url;
     }
 
-    /**
-     * Make an HTTP request to the given URL and return a String as the response.
-     */
     private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
 
-        // If the URL is null, then return early.
         if (url == null) {
             return jsonResponse;
         }
@@ -104,10 +90,6 @@ public final class QueryUtils {
         return jsonResponse;
     }
 
-    /**
-     * Convert the {@link InputStream} into a String which contains the
-     * whole JSON response from the server.
-     */
     private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {
@@ -122,15 +104,10 @@ public final class QueryUtils {
         return output.toString();
     }
 
-
     public static ArrayList<Book> extractBooks(String jsonresponse) {
 
-        // Create an empty ArrayList that we can start adding earthquakes to
         ArrayList<Book> books = new ArrayList<>();
 
-        // Try to parse the SAMPLE_JSON_RESPONSE. If there's a problem with the way the JSON
-        // is formatted, a JSONException exception object will be thrown.
-        // Catch the exception so the app doesn't crash, and print the error message to the logs.
         try {
 
             JSONObject root = new JSONObject(jsonresponse);
@@ -149,8 +126,6 @@ public final class QueryUtils {
                     String author = "By: "+authorObject.getString(0);
                     String summary = properties.getString("description");
 
-                    //String imageLink = properties.optString("thumbnail");
-                    //String thumbnail = imageLink.getString(1);
                     Log.e("url:", thumbnail);
 
                     books.add(new Book(title, author, summary, thumbnail));
@@ -162,13 +137,10 @@ public final class QueryUtils {
             }
 
         } catch (JSONException e) {
-            // If an error is thrown when executing any of the above statements in the "try" block,
-            // catch the exception here, so the app doesn't crash. Print a log message
-            // with the message from the exception.
+
             Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
         }
 
-        // Return the list of books
         Log.e("List", "There are "+books.size()+" books beign returned");
         return books;
     }

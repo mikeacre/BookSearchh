@@ -55,15 +55,8 @@ public class BookAdapter extends ArrayAdapter<Book> {
         TextView title = (TextView) listItemView.findViewById(R.id.title);
         TextView author = (TextView) listItemView.findViewById(R.id.author);
         ImageView thumbView = (ImageView) listItemView.findViewById(R.id.thumbnail);
-
-
         title.setText(currBook.getTitle());
         author.setText(currBook.getAuthor());
-
-
-        String thumbString = currBook.getThumbnail();
-
-        //Bitmap bmp = loadBitmap(currBook.getThumbnail());
         Bitmap bmp = null;
 
         try {
@@ -73,14 +66,9 @@ public class BookAdapter extends ArrayAdapter<Book> {
             e.printStackTrace();
         }
 
-
         thumbView.setImageBitmap(bmp);
-
 
         return listItemView;
     }
 
-    /*
-    Create thumbnail downloader
-     */
 }

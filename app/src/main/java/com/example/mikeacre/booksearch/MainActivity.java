@@ -76,13 +76,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         final ArrayList<Book> finBooks = (ArrayList<Book>) books;
 
         ListView bookListView = (ListView) findViewById(R.id.displaybooks);
-        // Create a new {@link ArrayAdapter} of earthquakes
         BookAdapter adapter = new BookAdapter(this, finBooks);
-
-        // Set the adapter on the {@link ListView}
-        // so the list can be populated in the user interface
         bookListView.setAdapter(adapter);
-
         bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -108,12 +103,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<Book>> onCreateLoader(int id, Bundle args) {
-        RelativeLayout masque = (RelativeLayout) findViewById(R.id.masque);
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
-        progressBar.setVisibility(View.VISIBLE);
-        masque.setVisibility(View.VISIBLE);
+        if(checkInternet()) {
+            RelativeLayout masque = (RelativeLayout) findViewById(R.id.masque);
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
+            progressBar.setVisibility(View.VISIBLE);
+            masque.setVisibility(View.VISIBLE);
 
-        return new BookLoader(this, query);
+            return new BookLoader(this, query);
+        }
+        else{
+            setContentView(R.layout.no_internet);
+            return null;
+        }
     }
 
     @Override
