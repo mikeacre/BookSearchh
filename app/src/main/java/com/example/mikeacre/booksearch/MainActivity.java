@@ -53,11 +53,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     public void newSearch(){
-
-        EditText editText = (EditText) findViewById(R.id.serachfield);
-        String string = (String) editText.getText().toString();
-        query = string;
-        getLoaderManager().restartLoader(1, null, this);
+        if(!checkInternet())
+            setContentView(R.layout.no_internet);
+        else {
+            EditText editText = (EditText) findViewById(R.id.serachfield);
+            String string = (String) editText.getText().toString();
+            query = string;
+            getLoaderManager().restartLoader(1, null, this);
+        }
     }
 
     public boolean checkInternet() {
@@ -103,18 +106,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<Book>> onCreateLoader(int id, Bundle args) {
-        if(checkInternet()) {
             RelativeLayout masque = (RelativeLayout) findViewById(R.id.masque);
             ProgressBar progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
             progressBar.setVisibility(View.VISIBLE);
             masque.setVisibility(View.VISIBLE);
 
             return new BookLoader(this, query);
-        }
-        else{
-            setContentView(R.layout.no_internet);
-            return null;
-        }
     }
 
     @Override
